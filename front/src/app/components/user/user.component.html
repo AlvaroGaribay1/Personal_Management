@@ -1,0 +1,114 @@
+<div class="container">
+  <div>
+    <button class="btn btn-primary" type="button" (click)="open(content)">
+      Add Employee
+    </button>
+  </div>
+  <br />
+  <div>
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+      type="button"
+    >
+      Generate Report
+    </button>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Employee Form</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <!-- Form to create a new user -->
+      <form [formGroup]="form" class="row g-3" (ngSubmit)="saveEmployee()">
+        <div class="col-md-6" class="form-group">
+          <label for="inputEmail4" class="form-label">Name</label>
+          <input type="text" class="form-control" formControlName="name" id="name" />
+        </div>
+        <div class="col-md-6" class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" formControlName="password" id="password" />
+        </div>
+        <div class="col-6" class="form-group">
+          <label for="department" class="form-label">Department</label>
+          <select id="department" formControlName="department" class="form-select">
+            <option selected>Choose...</option>
+            <option [ngValue]="d" *ngFor="let d of departments" >{{ d.name }}</option>
+          </select>
+        </div>
+        <div class="col-6" class="form-group">
+          <label for="access" class="form-label">Access Level</label>
+          <select id="access" formControlName="access" class="form-select">
+            <option selected>Choose...</option>
+            <option [ngValue]="a" *ngFor="let a of access" >{{ a.name }}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" (click)="modal.close(); saveEmployee()">Register</button>
+    </div>
+  </ng-template>
+
+  <hr />
+
+  <table
+    mat-table
+    [dataSource]="users"
+    class="mat-elevation-z8"
+    class="table table-striped"
+  >
+    <!-- Id column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- LastName Column
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef>LastName</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
+    </ng-container> -->
+
+    <!-- Password Column -->
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef>Password</th>
+      <td mat-cell *matCellDef="let element">{{ element.password }}</td>
+    </ng-container>
+
+    <!-- Access Column -->
+    <ng-container matColumnDef="access">
+      <th mat-header-cell *matHeaderCellDef>Access level</th>
+      <td mat-cell *matCellDef="let element">{{ element.access.name }}</td>
+    </ng-container>
+
+    <!-- Department Column -->
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef>Department</th>
+      <td mat-cell *matCellDef="let element">{{ element.department.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef>Opciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)="modify(element); open(content)" class="btn btn-info" type="button">
+          <i class="bi bi-pen"></i>
+        </button>
+        <button (click)="deleteEmployee(element)" class="btn btn-danger" type="button">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
