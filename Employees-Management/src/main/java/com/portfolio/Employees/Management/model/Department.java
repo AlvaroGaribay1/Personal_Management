@@ -14,5 +14,7 @@ public class Department implements Serializable {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "Image_URL")
+    private String image;
 
 }

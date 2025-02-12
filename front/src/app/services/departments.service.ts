@@ -14,4 +14,8 @@ export class DepartmentsService {
     return this.httpClient.get(this.API_SERVER);
   }
 
+  public getDepartmentById(id: any) {
+    return this.httpClient.get(this.API_SERVER + "/" + id);
+  }
+
 }
