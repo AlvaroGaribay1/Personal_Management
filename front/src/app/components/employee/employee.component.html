@@ -1,29 +1,32 @@
 <div class="container">
+  <!-- Buttons over the table -->
   <div class="row">
     <div class="col-sm-3">
       <button class="btn btn-primary " type="button" (click)="open(content)">
         Add Employee
       </button>
     </div>
-<div class="input-group w-25 ms-auto" style="text-align: right;">
-  <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-search"></i></span>
-  <input [(ngModel)]="searchText"  (keyup)="applyFilter()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-</div>
-
-
-</div>
-
-  <div>
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-      type="button"
-    >
-      Generate Report
-    </button>
+  <div class="input-group w-25 ms-auto" style="text-align: right;">
+    <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-search"></i></span>
+    <input [(ngModel)]="searchText" (keyup)="applyFilter()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
   </div>
+</div>
+<div class="row" style="margin-top: 1rem; margin-bottom: 1rem;">
+  <div class="col-sm-3">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        type="button"
+      >
+        Generate Report
+      </button>
+    </div>
+</div>
+  <!-- End of Buttons over the table -->
 
+
+  <!-- Modal to show the form by clicking -->
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Employee Form</h4>
@@ -37,8 +40,12 @@
           <input type="text" class="form-control" formControlName="name" id="name" />
         </div>
         <div class="col-md-6" class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" formControlName="password" id="password" />
+          <label for="date_in" class="form-label">Date In</label>
+          <input type="date" class="form-control" formControlName="date_in" id="date_in" />
+        </div>
+        <div class="col-md-6" class="form-group">
+          <label for="date_out" class="form-label">Date Out</label>
+          <input type="date" class="form-control" formControlName="date_out" id="date_out" />
         </div>
         <div class="col-6" class="form-group">
           <label for="department" class="form-label">Department</label>
@@ -61,49 +68,61 @@
       <button type="submit" class="btn btn-primary" (click)="modal.close(); saveEmployee()">Register</button>
     </div>
   </ng-template>
+  <!-- End of modal to show the form by clicking -->
 
-  <hr />
 
+  <!-- Users table -->
   <table
     mat-table
     [dataSource]="dataSource"
     class="mat-elevation-z8"
     class="table table-striped"
+    matSort
+    (matSortChange)="announceSortChange($event)"
   >
     <!-- Id column -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>
       <td mat-cell *matCellDef="let element" >{{ element.id }}</td>
     </ng-container>
+
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Name</th>
       <td mat-cell *matCellDef="let element">{{ element.name }}</td>
     </ng-container>
 
-    <!-- LastName Column
-    <ng-container matColumnDef="lastname">
-      <th mat-header-cell *matHeaderCellDef>LastName</th>
-      <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
-    </ng-container> -->
+    <!-- Date_In Column -->
+    <ng-container matColumnDef="date_in">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">Date In</th>
+      <td mat-cell *matCellDef="let element">{{ element.date_in | date }}</td>
+    </ng-container>
 
-    <!-- Password Column -->
-    <ng-container matColumnDef="password">
-      <th mat-header-cell *matHeaderCellDef>Password</th>
-      <td mat-cell *matCellDef="let element">{{ element.password }}</td>
+    <!-- Date_Out Column -->
+    <ng-container matColumnDef="date_out">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">Date Out</th>
+      <td mat-cell *matCellDef="let element">{{ element.date_out | date }}</td>
+    </ng-container>
+
+    <!-- State Column -->
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by active">State</th>
+      <td mat-cell *matCellDef="let element"> {{ element.active ? 'Active' : 'Inactive'}} </td>
     </ng-container>
 
     <!-- Access Column -->
     <ng-container matColumnDef="access">
-      <th mat-header-cell *matHeaderCellDef>Access level</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by access">Access level</th>
       <td mat-cell *matCellDef="let element">{{ element.access.name }}</td>
     </ng-container>
 
     <!-- Department Column -->
     <ng-container matColumnDef="department">
-      <th mat-header-cell *matHeaderCellDef>Department</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by department">Department</th>
       <td mat-cell *matCellDef="let element">{{ element.department.name }}</td>
     </ng-container>
+
+    <!-- Options column -->
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef>Opciones</th>
       <td mat-cell *matCellDef="let element">
@@ -119,4 +138,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <!-- End of users table -->
 </div>

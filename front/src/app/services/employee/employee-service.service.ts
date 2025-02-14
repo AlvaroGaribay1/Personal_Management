@@ -5,10 +5,10 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class UserServiceService {
+export class EmployeeServiceService {
   constructor(private httpClient: HttpClient) {}
 
-  private API_SERVER = 'http://localhost:8080/users';
+  private API_SERVER = 'http://localhost:8080/employees';
 
   public getAllUsers(): Observable<any> {
     return this.httpClient.get(this.API_SERVER);
@@ -21,4 +21,9 @@ export class UserServiceService {
   public deleteEmployee(id: any): Observable<any> {
     return this.httpClient.delete(this.API_SERVER + '/' + id);
   }
+
+  public getEmployeesByDepartment(id: any): Observable<any> {
+    return this.httpClient.get(this.API_SERVER + '/department/' + id);
+  }
+
 }

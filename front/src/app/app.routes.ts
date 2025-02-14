@@ -1,30 +1,39 @@
 import { Routes } from '@angular/router';
-import { UserComponent } from './components/user/user.component';
+import { EmployeeComponent } from './components/employee/employee.component';
 import { DepartmentsComponent } from './components/departments/departments.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './component/home/home.component';
 
 export const routes: Routes = [
   {
     path: 'users',
-    component: UserComponent
+    component: EmployeeComponent,
   },
   {
     path: 'departments',
-    component: DepartmentsComponent
+    component: DepartmentsComponent,
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
   },
   {
     path: 'reports',
-    component: ReportsComponent
+    component: ReportsComponent,
   },
   {
     path: 'department/:id',
-    component: DepartmentDetailsComponent
-  }
-
+    component: DepartmentDetailsComponent,
+  },
+  {
+    path: '',
+    component: LoginComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
 ];

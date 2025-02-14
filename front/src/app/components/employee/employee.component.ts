@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
-import { UserServiceService } from '../../services/user-service.service';
+import { EmployeeServiceService } from '../../services/employee/employee-service.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,11 +7,13 @@ import {
   NgbDatepickerModule,
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
-import { AccessService } from '../../services/access.service';
+import { AccessService } from '../../services/access/access.service';
 import { DepartmentService } from '../../services/department.service';
 import { DepartmentsService } from '../../services/departments.service';
 import e from 'express';
 import { FilterPipe } from '../../pipes/filter.pipe';
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-user',
@@ -20,25 +22,42 @@ import { FilterPipe } from '../../pipes/filter.pipe';
     CommonModule,
     NgbDatepickerModule,
     ReactiveFormsModule,
-    FilterPipe,
     FormsModule,
+    MatSortModule,
   ],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.css',
+  templateUrl: './employee.component.html',
+  styleUrl: './employee.component.css',
 })
-export class UserComponent implements OnInit {
+export class EmployeeComponent implements OnInit, AfterViewInit {
   users: any[] = [];
   access: any[] = [];
   departments: any[] = [];
   form!: FormGroup;
   searchText = '';
-  dataSource: any;
-
   private modalService = inject(NgbModal);
   closeResult: WritableSignal<string> = signal('');
+  private _liveAnnouncer = inject(LiveAnnouncer);
+
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'date_in',
+    'date_out',
+    'state',
+    'access',
+    'department',
+    'options',
+  ];
+
+  dataSource = new MatTableDataSource(this.users);
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort; // Asignar MatSort después de la vista cargada
+  }
 
   constructor(
-    public userService: UserServiceService,
+    public employeeService: EmployeeServiceService,
     public fb: FormBuilder,
     public accessService: AccessService,
     public departmentService: DepartmentsService,
@@ -49,14 +68,15 @@ export class UserComponent implements OnInit {
     this.form = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      password: ['', Validators.required],
+      date_in: ['', Validators.required],
+      date_out: [''],
       access: ['', Validators.required],
       department: ['', Validators.required],
     });
 
-    this.userService.getAllUsers().subscribe((res) => {
+    this.employeeService.getAllUsers().subscribe((res) => {
       this.users = res;
-      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource.data = this.users; // ✅ En lugar de crear un nuevo MatTableDataSource, solo actualiza data
     });
 
     this.accessService.getAllAccess().subscribe((res) => {
@@ -71,29 +91,39 @@ export class UserComponent implements OnInit {
         console.error(error);
       }
     );
+
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      if (property === 'access') {
+        return item.access?.name?.toLowerCase() || ''; // Evita errores si es null
+      }
+
+      if (property === 'department') {
+        return item.department?.name?.toLowerCase() || ''; // Evita errores si es null
+      }
+      return item[property];
+    };
+    
   }
 
   saveEmployee() {
-    this.userService.saveEmployee(this.form.value).subscribe(
+    this.employeeService.saveEmployee(this.form.value).subscribe(
       (res) => {
         this.form.reset();
-        // Elimina el usuario antiguo si existe
-        this.users = this.users.filter((user) => res.id !== user.id);
-        // Agrega el nuevo usuario
-        this.users.push(res);
+        this.users = this.users.filter((user) => res.id !== user.id); // Remueve el usuario antiguo si existe
+        this.users.push(res); // Agrega el nuevo usuario
 
-        // Ordena los usuarios por ID (puedes ajustar la lógica si es necesario)
-        this.users.sort((a, b) => a.id - b.id);
+        this.users.sort((a, b) => a.id - b.id); // Ordena los usuarios por ID
 
-        // Actualiza el MatTableDataSource
-        this.dataSource = new MatTableDataSource(this.users);
-        this.dataSource.filter = this.searchText.trim().toLowerCase(); // Si tienes filtro aplicado, reinícialo
+        this.dataSource.data = this.users; // ✅ No crees un nuevo MatTableDataSource, solo actualiza data
+        this.dataSource.filter = this.searchText.trim().toLowerCase();
       },
       (error) => {
         console.error(error);
       }
     );
   }
+
   open(content: TemplateRef<any>) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
@@ -103,7 +133,7 @@ export class UserComponent implements OnInit {
   }
 
   deleteEmployee(user: any) {
-    this.userService.deleteEmployee(user.id).subscribe(
+    this.employeeService.deleteEmployee(user.id).subscribe(
       (res) => {
         if (res) {
           // Solo si la eliminación fue exitosa
@@ -123,24 +153,26 @@ export class UserComponent implements OnInit {
     this.form.setValue({
       id: user.id,
       name: user.name,
-      password: user.password,
+      date_in: user.date_in,
+      date_out: user.date_out,
       access: user.access,
       department: user.department,
     });
   }
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'password',
-    'access',
-    'department',
-    'options',
-  ];
-
   applyFilter() {
     this.dataSource.filter = this.searchText.trim().toLowerCase();
   }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
 }
 
 

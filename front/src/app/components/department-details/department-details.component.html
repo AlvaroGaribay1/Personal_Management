@@ -1,11 +1,58 @@
 <div class="container">
-    <div class="row">
-      <h1>{{department.name}}</h1>
-      <div class="col-sm-6">
-        <img class="image" [src]="department.image" alt="" />
+  <div class="row">
+    <h1>{{ department?.name }}</h1>
+    <div class="col-sm-6 py-4">
+      <img class="image" [src]="department?.image" alt="" />
+    </div>
+    <div class="col-sm-6 pt-5">
+      <h3 class="mt-2">Identificador del departamento</h3>
+      <div class="pt-5">
+        <h3 class="mx-auto" id="circle">{{ department?.id }}</h3>
       </div>
-      <div class="col-sm-6">
-        <h1>Identificador del departamento</h1>
-        <h3>{{department.id}}</h3>
-      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 2rem">
+    <div class="col-sm-6">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>No.</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="date_in">
+          <th mat-header-cell *matHeaderCellDef>Enter day</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.date_in | date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date_out">
+          <th mat-header-cell *matHeaderCellDef>Day out</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.date_out | date }}
+          </td>
+        </ng-container>
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>State</th>
+        <td mat-cell *matCellDef="let element">
+          <!-- Usar ngIf para mostrar el ícono de acuerdo con el estado -->
+          <i *ngIf="element.active" id="greenDot" class="bi bi-dot"></i>
+          <i *ngIf="!element.active" id="redDot" class="bi bi-dot"></i>
+        </td>
+      </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <div class="col-sm-6">
+      <canvas id="ctx"></canvas>
+    </div>
+  </div>
 </div>
