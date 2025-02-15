@@ -28,4 +28,12 @@ public class Employee implements Serializable {
     @Column(name = "Active")
     private boolean active;
 
+    public Date getDate_out() {
+        return this.date_out;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
 }

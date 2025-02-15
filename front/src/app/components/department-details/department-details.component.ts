@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DepartmentService } from '../../services/department.service';
-import { DepartmentsService } from '../../services/departments.service';
+import { DepartmentsService } from '../../services/department/departments.service';
 import { EmployeeServiceService } from '../../services/employee/employee-service.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';

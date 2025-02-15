@@ -8,8 +8,7 @@ import {
   NgbModal,
 } from '@ng-bootstrap/ng-bootstrap';
 import { AccessService } from '../../services/access/access.service';
-import { DepartmentService } from '../../services/department.service';
-import { DepartmentsService } from '../../services/departments.service';
+import { DepartmentsService } from '../../services/department/departments.service';
 import e from 'express';
 import { FilterPipe } from '../../pipes/filter.pipe';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
