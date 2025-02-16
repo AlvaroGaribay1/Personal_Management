@@ -5,7 +5,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { DepartmentDetailsComponent } from './components/department-details/department-details.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './component/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
   {
