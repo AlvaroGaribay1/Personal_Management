@@ -10,7 +10,6 @@ import {
 import { AccessService } from '../../services/access/access.service';
 import { DepartmentsService } from '../../services/department/departments.service';
 import e from 'express';
-import { FilterPipe } from '../../pipes/filter.pipe';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
@@ -74,9 +73,12 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
     });
 
     this.employeeService.getAllUsers().subscribe((res) => {
-      this.users = res;
-      this.dataSource.data = this.users; // ✅ En lugar de crear un nuevo MatTableDataSource, solo actualiza data
+      console.log(res);
+      this.users = res || []; // Evita que users sea null
+      this.dataSource.data = [...this.users]; // Esto notifica correctamente a la tabla
+      this.cdr.detectChanges(); // 🚀 Forzar detección de cambios para actualizar la vista
     });
+
 
     this.accessService.getAllAccess().subscribe((res) => {
       this.access = res;
@@ -102,7 +104,7 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       }
       return item[property];
     };
-    
+
   }
 
   saveEmployee() {
@@ -113,8 +115,7 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
         this.users.push(res); // Agrega el nuevo usuario
 
         this.users.sort((a, b) => a.id - b.id); // Ordena los usuarios por ID
-
-        this.dataSource.data = this.users; // ✅ No crees un nuevo MatTableDataSource, solo actualiza data
+        this.dataSource.data = [...this.users]; // Esto notifica correctamente a la tabla
         this.dataSource.filter = this.searchText.trim().toLowerCase();
       },
       (error) => {

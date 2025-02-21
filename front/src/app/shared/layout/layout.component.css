@@ -11,3 +11,49 @@
   justify-content: space-between;
   width: 50%;
 }
+
+.user-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1877f2;
+}
+
+.user-info h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.user-info p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.user-details {
+  margin-top: 12px;
+  text-align: left;
+}
+
+.user-details p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
