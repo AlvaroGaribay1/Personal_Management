@@ -9,15 +9,16 @@ export class TokenService {
   constructor() {}
 
   // Guardar el token en sessionStorage o localStorage
-  saveToken(token: string, remember: boolean): void {
-    if (remember) {
-      localStorage.setItem(this.TOKEN_KEY, token); // Guarda en localStorage si el usuario quiere recordar
-    } else {
-      sessionStorage.setItem(this.TOKEN_KEY, token); // Guarda en sessionStorage si no
-    }
+  saveToken(token: string): void {
+    sessionStorage.setItem(this.TOKEN_KEY, token); // Guarda en sessionStorage si no
   }
 
-  // Obtener el token desde sessionStorage o localStorage
+  // Elimina el token al cerrar sesión
+  removeToken(): void {
+    sessionStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  // Obtener el token desde sessionStorage
   getToken(): string | null {
     return (
       sessionStorage.getItem(this.TOKEN_KEY) ||
@@ -25,9 +26,4 @@ export class TokenService {
     );
   }
 
-  // Eliminar el token al hacer logout
-  removeToken(): void {
-    sessionStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.TOKEN_KEY);
-  }
 }

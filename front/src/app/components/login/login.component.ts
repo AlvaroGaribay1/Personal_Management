@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,13 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
-  rememberMe = false;
   role = '';
   email = '';
   private modalService = inject(NgbModal);
   closeResult: WritableSignal<string> = signal('');
   form!: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { }
+  constructor(private tokenService: TokenService ,private authService: AuthService, private fb: FormBuilder, private router: Router) { }
 
 
 
@@ -36,8 +36,12 @@ export class LoginComponent implements OnInit {
 
   //Method to use the authentication service for login and access.
   onLogin() {
-    this.authService.login({ username: this.username, password: this.password }, this.rememberMe).subscribe({
-      next: () => this.router.navigate(['/home']),
+    this.authService.login({ username: this.username, password: this.password }).subscribe({
+      next: (res) => {
+        this.tokenService.saveToken(res.token.toString());
+        this.router.navigate(['/home']);
+        console.log(res);
+      },
       error: err => console.error('Error en login:', err)
     });
   }
