@@ -5,9 +5,10 @@ import com.portfolio.Employees.Management.dtos.AuthRequest;
 import com.portfolio.Employees.Management.dtos.AuthResponse;
 import com.portfolio.Employees.Management.model.User;
 import com.portfolio.Employees.Management.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,20 +31,32 @@ public class AuthService {
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
 
-        Optional<User> userOptional = userRepository.findByUsername(request.getUsername());
+            User user = userRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
+            String token = jwtService.generateToken(user);
+
+            return new AuthResponse(token, user.getId(), user.getUsername(), user.getEmail(), user.getRole());
+        } catch (BadCredentialsException e) {
+            throw new RuntimeException("Credenciales inválidas");
         }
-
-        User user = userOptional.get();
-
-        String token = jwtService.generateToken(user.getUsername());
-
-        return new AuthResponse(token);
     }
+
+    // Método mejorado para obtener un usuario por ID
+    public User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    public String saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        this.userRepository.save(user);
+        return "User saved";
+    }
+
 }

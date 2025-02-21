@@ -3,6 +3,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
+import { TokenService } from '../../services/auth/token.service';
+
 
 
   @Component({
@@ -11,5 +13,15 @@ import { RouterLink } from '@angular/router';
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.css',
   })
+  export class LayoutComponent {
+    email = sessionStorage.getItem('email');
+    username = sessionStorage.getItem('username');
+    role = sessionStorage.getItem('role');
 
-  export class LayoutComponent {};
+    constructor(private tokenService: TokenService) {}
+
+    logout(): void {
+      this.tokenService.removeToken();
+    }
+  };
+

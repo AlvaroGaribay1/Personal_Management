@@ -1,5 +1,6 @@
 package com.portfolio.Employees.Management.config;
 
+import com.portfolio.Employees.Management.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,15 +16,18 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "supersecreto123456789012345678901234567890"; // Clave segura
+    private static final String SECRET_KEY = "supersecreto12345678901234567890123456789012345678901234567890123456"; // 256 bits (32 bytes)
+
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes()); // Se usa una clave de 256 bits
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
+                .claim("id", user.getId())  // Incluir ID del usuario
+                .claim("roles", user.getRole()) // Incluir roles del usuario
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora de validez
-                .signWith(key, SignatureAlgorithm.HS256) // Se usa la clave segura
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hora de expiración
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
