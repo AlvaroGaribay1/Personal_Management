@@ -41,7 +41,7 @@
 <!-- Offcanvas -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="infoOffcanvas">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Perfil</h5>
+    <h5 class="offcanvas-title mt-4">Work profile</h5>
     <button
       type="button"
       class="btn-close"
@@ -50,14 +50,22 @@
   </div>
   <div class="offcanvas-body">
     <ng-container #profileContainer>
-      <div>
-        {{ email }}
-      </div>
-      <div>
-        {{ username }}
-      </div>
-      <div>
-        {{ role }}
+      <div class="user-card">
+        <div class="user-header">
+          <img
+            src="https://img.freepik.com/free-photo/young-successful-businessman_1163-3860.jpg?t=st=1740099134~exp=1740102734~hmac=1b12ef8fe5fbb0f42c79caaa6f9101423d8199d0c89e7af89f7bce28f38cacc0&w=1380"
+            alt="Foto de perfil"
+            class="profile-image"
+          />
+        </div>
+        <div class="user-info mt-5">
+          <h2>Username: {{ username }}</h2>
+          <p>Identificator: {{ id }}</p>
+        </div>
+        <div class="user-details mt-5">
+          <p class="mb-2"><strong>Email:</strong> {{ email }}</p>
+          <p class="mb-2"><strong>Rol:</strong> {{ role }}</p>
+        </div>
       </div>
     </ng-container>
   </div>

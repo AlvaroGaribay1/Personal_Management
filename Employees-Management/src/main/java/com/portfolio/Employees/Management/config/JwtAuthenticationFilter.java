@@ -33,24 +33,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response); // Continuar con el siguiente filtro
+            filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7); // Elimina "Bearer " del token
+        String token = authHeader.substring(7);
         String username = jwtService.extractUsername(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.isTokenValid(token, userDetails)) {
-                // Crear un objeto de autenticación y agregarlo al contexto de seguridad
-                UsernamePasswordAuthenticationToken authenticationToken =
+            // Verificar si el token es válido
+            if (jwtService.validateToken(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        filterChain.doFilter(request, response); // Continuar con el siguiente filtro
+
+        filterChain.doFilter(request, response);
     }
 }

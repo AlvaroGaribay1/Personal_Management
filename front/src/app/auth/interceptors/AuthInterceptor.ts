@@ -1,23 +1,29 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandlerFn,
+  HttpEvent,
+  HttpInterceptorFn,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TokenService } from '../../services/token/token.service';
+import { Observable } from 'rxjs';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(TokenService);
+// Interceptor como función, con los tipos adecuados
+export const AuthInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<any>,
+  next: HttpHandlerFn // Usamos HttpHandlerFn en lugar de HttpHandler
+): Observable<HttpEvent<any>> => {
+  const tokenService = inject(TokenService); // Usar 'inject' para inyectar dependencias
   const token = tokenService.getToken();
 
-  console.log('Token en interceptor:', token); // Verifica si el token está presente
-
   if (token) {
-    const clonedRequest = req.clone({
+    const cloned = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log('Solicitud modificada con token:', clonedRequest);
-    return next(clonedRequest);
+    return next(cloned); // Pasar la solicitud clonada al siguiente manejador
   }
 
-  return next(req);
+  return next(req); // Pasar la solicitud original si no hay token
 };

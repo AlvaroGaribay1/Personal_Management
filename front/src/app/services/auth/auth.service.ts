@@ -18,7 +18,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
-  login(credentials: { username: string; password: string }, remember: boolean): Observable<{ token: String}> {
+  login(credentials: { username: string; password: string }): Observable<{ token: String}> {
     return this.http
       .post<{ userId: number; email: String; token: string; username: string; role: string }>(
         this.API_URL,
@@ -26,7 +26,7 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          this.tokenService.saveToken(response.token, remember);
+          this.tokenService.saveToken(response.token);
           this.email = response.email;
           this.id = response.userId;
           this.user = response.username;
