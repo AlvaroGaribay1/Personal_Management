@@ -1,5 +1,5 @@
-<nav class="navbar nav-underline navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="nav nav-underline container-fluid" role="tablist">
     <a class="navbar-brand" routerLink="/users">PSM</a>
     <button
       class="navbar-toggler"
@@ -14,24 +14,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/home">Home</a>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="/home">Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/users">Employees</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/departments">Departamentos</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="offcanvas" href="#infoOffcanvas"
-            ><i class="bi bi-person-circle"></i
-          ></a>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" data-bs-toggle="offcanvas" href="#infoOffcanvas"><i class="bi bi-person-circle"></i></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="logout()" routerLink="/"
-            ><i class="bi bi-box-arrow-left"></i
-          ></a>
+          <a class="nav-link" (click)="logout()" routerLink="/"><i class="bi bi-box-arrow-left"></i></a>
         </li>
       </ul>
     </div>

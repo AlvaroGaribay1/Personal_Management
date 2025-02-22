@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
-import { TokenService } from '../../services/auth/token.service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TokenService } from '../../services/token/token.service';
 
 
 
   @Component({
     selector: 'app-layout',
-    imports: [MatToolbarModule, MatButtonModule, MatIconModule, RouterLink],
+    imports: [MatToolbarModule, MatButtonModule, MatIconModule, RouterLinkActive, RouterLink],
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.css',
   })

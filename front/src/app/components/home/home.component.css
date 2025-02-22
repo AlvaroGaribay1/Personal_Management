@@ -1,0 +1,21 @@
+.container {
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.chart {
+  width: 100%;
+  height: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #a2c8f2;
+  border-radius: 10px;
+}
+
+
+.chart-rounded{
+  width: 100%;
+  height: 744px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #a2c8f2;
+}
