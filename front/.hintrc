@@ -30,6 +30,8 @@
         "aria-required-parent": "off",
         "aria-valid-attr-value": "off"
       }
-    ]
+    ],
+    "button-type": "off",
+    "no-inline-styles": "off"
   }
 }

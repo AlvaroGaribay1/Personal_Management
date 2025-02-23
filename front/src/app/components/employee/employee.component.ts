@@ -12,6 +12,7 @@ import { DepartmentsService } from '../../services/department/departments.servic
 import e from 'express';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
@@ -110,6 +111,11 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
   saveEmployee() {
     this.employeeService.saveEmployee(this.form.value).subscribe(
       (res) => {
+        Swal.fire({
+          title: 'Good news!',
+          text: 'Employee saved',
+          icon: 'success',
+        });
         this.form.reset();
         this.users = this.users.filter((user) => res.id !== user.id); // Remueve el usuario antiguo si existe
         this.users.push(res); // Agrega el nuevo usuario
@@ -132,21 +138,44 @@ export class EmployeeComponent implements OnInit, AfterViewInit {
       });
   }
 
+
+
   deleteEmployee(user: any) {
-    this.employeeService.deleteEmployee(user.id).subscribe(
-      (res) => {
-        if (res) {
-          // Solo si la eliminación fue exitosa
-          this.users = this.users.filter((p) => p.id !== user.id);
-          this.dataSource = new MatTableDataSource(this.users); // Reinicia el MatTableDataSource para que funcione el filtro y la paginación
-          this.dataSource.filter = this.searchText.trim().toLowerCase();
-          this.cdr.detectChanges(); // 🚀 Fuerza la actualización de la vist
-        }
-      },
-      (error) => {
-        console.error('Error al eliminar:', error);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.employeeService.deleteEmployee(user.id).subscribe(
+          (res) => {
+            if (res) {
+              // Solo si la eliminación fue exitosa
+              this.users = this.users.filter((p) => p.id !== user.id);
+              this.dataSource = new MatTableDataSource(this.users); // Reinicia el MatTableDataSource para que funcione el filtro y la paginación
+              this.dataSource.filter = this.searchText.trim().toLowerCase();
+              this.cdr.detectChanges(); // 🚀 Fuerza la actualización de la vist
+            }
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Bad news!',
+              text: 'Action not completed!',
+              icon: 'error',
+            });
+          }
+        );
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Action completed',
+          icon: 'success',
+        });
       }
-    );
+    });
   }
 
   modify(user: any) {
