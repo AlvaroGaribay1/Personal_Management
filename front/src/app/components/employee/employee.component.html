@@ -11,9 +11,7 @@
         </button>
       </div>
       <div class="input-group w-25 ms-auto" style="text-align: right">
-        <span class="input-group-text" id="inputGroup-sizing-sm"
-          ><i class="bi bi-search"></i
-        ></span>
+        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="bi bi-search"></i></span>
         <input
           [(ngModel)]="searchText"
           (keyup)="applyFilter()"
@@ -51,7 +49,7 @@
       </div>
       <div class="modal-body">
         <!-- Form to create a new user -->
-        <form [formGroup]="form" class="row g-3" (ngSubmit)="saveEmployee()">
+        <form [formGroup]="form" class="row g-3 needs-validation" needs-validation (ngSubmit)="saveEmployee()">
           <div class="col-md-6" class="form-group">
             <label for="inputEmail4" class="form-label">Name</label>
             <input
@@ -59,7 +57,12 @@
               class="form-control"
               formControlName="name"
               id="name"
+              [class.is-invalid]="form.controls['name'].invalid && form.controls['name'].touched"
+              required
             />
+            <div class="invalid-feedback" *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+              Enter a valid name
+            </div>
           </div>
           <div class="col-md-6" class="form-group">
             <label for="date_in" class="form-label">Date In</label>
@@ -68,7 +71,11 @@
               class="form-control"
               formControlName="date_in"
               id="date_in"
+              [class.is-invalid]="form.controls['date_in'].invalid && form.controls['date_in'].touched"
             />
+            <div class="invalid-feedback" *ngIf="form.controls['date_in'].invalid && form.controls['date_in'].touched">
+              Enter a valid register date
+            </div>
           </div>
           <div class="col-md-6" class="form-group">
             <label for="date_out" class="form-label">Date Out</label>
@@ -85,21 +92,28 @@
               id="department"
               formControlName="department"
               class="form-select"
+              [class.is-invalid]="form.controls['department'].invalid && form.controls['department'].touched"
             >
               <option selected>Choose...</option>
               <option [ngValue]="d" *ngFor="let d of departments">
                 {{ d.name }}
               </option>
             </select>
+            <div class="invalid-feedback" *ngIf="form.controls['department'].invalid && form.controls['department'].touched">
+              Select a valid department
+            </div>
           </div>
           <div class="col-6" class="form-group">
             <label for="access" class="form-label">Access Level</label>
-            <select id="access" formControlName="access" class="form-select">
+            <select id="access" formControlName="access" [class.is-invalid]="form.controls['access'].invalid && form.controls['access'].touched" class="form-select">
               <option selected>Choose...</option>
               <option [ngValue]="a" *ngFor="let a of access">
                 {{ a.name }}
               </option>
             </select>
+            <div class="invalid-feedback" *ngIf="form.controls['access'].invalid && form.controls['access'].touched">
+              Select a valid access level
+            </div>
           </div>
         </form>
       </div>
@@ -109,6 +123,7 @@
           type="submit"
           class="btn btn-primary"
           (click)="modal.close(); saveEmployee()"
+          [disabled]="form.invalid"
         >
           Register
         </button>
