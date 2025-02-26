@@ -1,33 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="nav nav-underline container-fluid" role="tablist">
-    <a class="navbar-brand" routerLink="/users">PSM</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+<!-- Navbar -->
+<nav class="navbar nav-underline navbar-expand-lg navbar-light bg-dark shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white fw-bold" routerLink="/users">PSM</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-          <a class="nav-link" routerLink="/home">Home</a>
+          <a class="nav-link text-white" routerLink="/home">Home</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/users">Employees</a>
+          <a class="nav-link text-white" routerLink="/users">Employees</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/departments">Departments</a>
+          <a class="nav-link text-white" routerLink="/departments">Departments</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" data-bs-toggle="offcanvas" href="#infoOffcanvas"><i class="bi bi-person-circle"></i></a>
+          <a class="nav-link text-white" data-bs-toggle="offcanvas" href="#infoOffcanvas"><i class="bi bi-person-circle"></i></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="logout()" routerLink="/"><i class="bi bi-box-arrow-left"></i></a>
+          <a class="nav-link text-white" (click)="logout()" routerLink="/"><i class="bi bi-box-arrow-left"></i></a>
         </li>
       </ul>
     </div>
@@ -35,32 +28,24 @@
 </nav>
 
 <!-- Offcanvas -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="infoOffcanvas">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title mt-4">Work profile</h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-    ></button>
+<div class="offcanvas offcanvas-end bg-light shadow" tabindex="-1" id="infoOffcanvas">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title mt-4 text-dark">Work Profile</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body">
     <ng-container #profileContainer>
-      <div class="user-card">
+      <div class="user-card text-center">
         <div class="user-header">
-          <img
-            src="https://img.freepik.com/free-photo/young-successful-businessman_1163-3860.jpg?t=st=1740099134~exp=1740102734~hmac=1b12ef8fe5fbb0f42c79caaa6f9101423d8199d0c89e7af89f7bce28f38cacc0&w=1380"
-            alt="Foto de perfil"
-            class="profile-image"
-          />
+          <img src="https://img.freepik.com/free-photo/young-successful-businessman_1163-3860.jpg" alt="Foto de perfil" class="profile-image rounded-circle shadow-lg"/>
         </div>
-        <div class="user-info mt-5">
-          <h2>Username: {{ username }}</h2>
-          <p>Identificator: {{ id }}</p>
+        <div class="user-info mt-4">
+          <h2 class="text-primary">Username: {{ username }}</h2>
+          <p class="text-muted">Identificator: {{ id }}</p>
         </div>
-        <div class="user-details mt-5">
-          <p class="mb-2"><strong>Email:</strong> {{ email }}</p>
-          <p class="mb-2"><strong>Rol:</strong> {{ role }}</p>
+        <div class="user-details mt-4 p-3 border rounded bg-white shadow-sm">
+          <p class="mb-2 text-dark"><strong>Email:</strong> {{ email }}</p>
+          <p class="mb-2 text-dark"><strong>Rol:</strong> {{ role }}</p>
         </div>
       </div>
     </ng-container>
