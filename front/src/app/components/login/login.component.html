@@ -1,32 +1,25 @@
-<div class="container">
-  <div class="form-control w-50 mx-auto px-4 py-5 bg-black text-white">
-    <h1 class="mb-5 text-center">Log in</h1>
-    <div class="mb-3 mx-auto">
-      <label for="formGroup" class="form-label">Username</label>
-      <input type="text" class="form-control" [(ngModel)] ="username" id="username1" placeholder="example_role">
+<div class="container d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-lg p-5" style="width: 400px; border-radius: 15px; background: white;">
+    <h2 class="text-center mb-4 text-primary">Log in</h2>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" [(ngModel)]="username" id="username" placeholder="example_role">
     </div>
-    <div class="mb-3 mx-auto">
-      <label for="formGroup" class="form-label" >Password</label>
-      <input type="password" class="form-control" [(ngModel)] ="password" id="password" placeholder="12345">
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" [(ngModel)]="password" id="password" placeholder="********">
     </div>
-    <div class="text-center pt-5 pb-4">
-      <button class="btn btn-primary col-10" (click)="onLogin()">Continue</button>
-    </div>
-
-    <div class="text-center">
-      <button class="btn btn-secondary col-10" (click)="open(content)">Sign In</button>
-    </div>
-        <!-- Section to sign in with thirt party accounts. -->
-    <div class="text-white text-center mt-5">
-      <p>Another ways to sign up</p>
+    <button class="btn btn-primary w-100 mb-3" (click)="onLogin()">Continue</button>
+    <button class="btn btn-outline-secondary w-100" (click)="open(content)">Sign Up</button>
+    <div class="text-center mt-4">
+      <p class="mb-2">Or sign in with</p>
       <div>
-        <a class="tparthies"><i class="bi bi-google"></i></a>
-        <a class="tparthies"><i class="bi bi-facebook"></i></a>
-        <a class="tparthies"><i class="bi bi-instagram"></i></a>
+        <a class="mx-2 text-dark"><i class="bi bi-google"></i></a>
+        <a class="mx-2 text-dark"><i class="bi bi-facebook"></i></a>
+        <a class="mx-2 text-dark"><i class="bi bi-instagram"></i></a>
       </div>
     </div>
   </div>
-
 
 
 
@@ -37,7 +30,7 @@
       <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-      
+
       <!-- Form to create a new user -->
       <form [formGroup]="form" class="row g-3 needs-validation" needs-validation (ngSubmit)="saveUser()">
         <div class="col-md-6" class="form-group">
