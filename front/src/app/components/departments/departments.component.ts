@@ -12,6 +12,8 @@ import { RouterLink } from '@angular/router';
 })
 
 
+
+
 export class DepartmentsComponent implements OnInit {
   departments: any[] = [];
   selectedDepartment: any;

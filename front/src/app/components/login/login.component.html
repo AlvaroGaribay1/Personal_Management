@@ -1,24 +1,21 @@
-<div class="container d-flex justify-content-center align-items-center vh-100 bg-light">
+<div class="bg-light main">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
   <div class="card shadow-lg p-5" style="width: 400px; border-radius: 15px; background: white;">
     <h2 class="text-center mb-4 text-primary">Log in</h2>
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" [(ngModel)]="username" id="username" placeholder="example_role">
+      <input type="text" class="form-control" [(ngModel)]="username" id="username" placeholder="username_123">
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" [(ngModel)]="password" id="password" placeholder="********">
+          <div class="d-flex">
+          <input type="password" class="form-control" [(ngModel)]="password" id="password" placeholder="********">
+          <span class="btn btn-button bi bi-eye"></span>
+    </div>
     </div>
     <button class="btn btn-primary w-100 mb-3" (click)="onLogin()">Continue</button>
     <button class="btn btn-outline-secondary w-100" (click)="open(content)">Sign Up</button>
-    <div class="text-center mt-4">
-      <p class="mb-2">Or sign in with</p>
-      <div>
-        <a class="mx-2 text-dark"><i class="bi bi-google"></i></a>
-        <a class="mx-2 text-dark"><i class="bi bi-facebook"></i></a>
-        <a class="mx-2 text-dark"><i class="bi bi-instagram"></i></a>
-      </div>
-    </div>
+
   </div>
 
 
@@ -84,5 +81,7 @@
     </div>
   </ng-template>
   <!-- End of modal to show the form by clicking -->
+
+</div>
 
 </div>
