@@ -80,7 +80,6 @@
               class="form-select"
               [class.is-invalid]="form.controls['department'].invalid && form.controls['department'].touched"
             >
-              <option selected>Choose...</option>
               <option [ngValue]="d" *ngFor="let d of departments">
                 {{ d.name }}
               </option>
@@ -92,7 +91,6 @@
           <div class="col-6" class="form-group">
             <label for="access" class="form-label">Access Level</label>
             <select id="access" formControlName="access" [class.is-invalid]="form.controls['access'].invalid && form.controls['access'].touched" class="form-select">
-              <option selected>Choose...</option>
               <option [ngValue]="a" *ngFor="let a of access">
                 {{ a.name }}
               </option>
